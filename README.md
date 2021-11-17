@@ -1,2 +1,2 @@
-# SkinLin
+# SkinTool
 pmmp virion
