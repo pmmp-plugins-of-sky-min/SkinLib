@@ -10,7 +10,9 @@ use function file_get_contents;
 use function rmdir;
 use function json_encode;
 use function json_decode;
+use function strlen;
 use function chr;
+use function ord;
 
 use function imagecreatefrompng;
 use function imagecopy;
@@ -24,6 +26,20 @@ use function imagecolorallocatealpha;
 use function imagecolortransparent;
 use function imagealphablending;
 use function imagesavealpha;
+use function imagefill;
+use function imagesetpixel;
+
+const SKIN_W = [
+	64 * 32 * 4 => 64,
+	64 * 64 * 4 => 64,
+	128 * 128 * 4 => 128
+];
+
+const SKIN_H = [
+	64 * 32 * 4 => 32,
+	64 * 64 * 4 => 64,
+	128 * 128 * 4 => 128
+];
 
 final class SkinTool{
 	use SingletonTrait;
@@ -56,6 +72,32 @@ final class SkinTool{
 			}
 		}
 		return $skindata;
+	}
+	
+	public function dataToImage(string $skindata) :?\GdImage{
+		$size = strlen($skinData);
+		if(!isset(self::SKIN_H[$size])) return null;
+		$p = 0;
+		$width = SKIN_W[$size];
+		$height = SKIN_H[$size];
+		$image = imagecreatetruecolor($width, $height);
+		imagefill($image, 0, 0, imagecolorallocatealpha($image, 0, 0, 0, 127));
+		for ($y = 0; $y < $height; $y++) {
+			for ($x = 0; $x < $width; $x++) {
+				$r = ord($skindata[$p]);
+				$p++;
+				$g = ord($skindata[$p]);
+				$p++;
+				$b = ord($skindata[$p]);
+				$p++;
+				$a = 127 - intdiv(ord($skinData[$p]), 2);
+				$p++;
+				$col = imagecolorallocatealpha($image, $r, $g, $b, $a);
+				imagesetpixel($image, $x, $y, $col);
+			}
+		}
+		imagesavealpha($image, true);
+		return $image;
 	}
 	
 	public function mergeModel(string $model1, string $model2, int $mode = self::JSON) :?string{
