@@ -56,6 +56,7 @@ final class SkinTool{
 		$model1 = json_decode($model1);
 		$model2 = json_decode($model2);
 		//todo
+		return json_encode($model1);
 	}
 	
 	public function mergeImage(GdImage $img1, GdImage $img2, int $size = self::SIZE64) :?GdImage{
