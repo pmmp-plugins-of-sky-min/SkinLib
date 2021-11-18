@@ -20,6 +20,10 @@ use function imagesx;
 use function imagesy;
 use function imagecreatetruecolor;
 use function imagecopyresampled;
+use function imagecolorallocatealpha;
+use function imagecolortransparent;
+use function imagealphablending;
+use function imagesavealpha;
 
 final class SkinTool{
 	use SingletonTrait;
@@ -85,6 +89,9 @@ final class SkinTool{
 	
 	public function imgPix(\GdImage $img, int $size) :\GdImage{
 		$result = imagecreatetruecolor($size, $size);
+		imagecolortransparent($result, imagecolorallocate($result, 0, 0, 0, 127));
+		imagealphablending($result, false);
+		imagesavealpha($result, true);
 		imagecopyresampled($result, $img, 0, 0, 0, 0, $size, $size, imagesx($img), imagesy($img));
 		return $result;
 	}
