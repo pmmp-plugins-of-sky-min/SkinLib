@@ -11,10 +11,15 @@ use function rmdir;
 use function json_encode;
 use function json_decode;
 use function chr;
+
 use function imagecreatefrompng;
 use function imagecopy;
 use function imagepng;
 use function imagecolorat;
+use function imagesx;
+use function imagesy;
+use function imagecreatetruecolor;
+use function imagecopyresampled;
 
 final class SkinTool{
 	use SingletonTrait;
@@ -64,8 +69,24 @@ final class SkinTool{
 	}
 	
 	public function mergeImage(\GdImage $img1, \GdImage $img2, int $size = self::SIZE64) :?\GdImage{
+		$img1_w = imagesx($img1);
+		$img1_h = imagesy($img1);
+		$img2_w = imagesx($img2);
+		$img2_h = imagesy($img2);
+		if(!($img1_h === $size && $img1_w === $size)){
+			$img1 = $this->imgPix($img1, $size);
+		}
+		if(!($img2_h === $size && $img2_w === $size)){
+			$img2 = $this->imgPix($img2, $size);
+		}
 		if(imagecopy($img1, $img2, 0, 0, 0, 0, $size, $size)) return $img1;
 		return null;
+	}
+	
+	public function imgPix(\GdImage $img, int $size) :\GdImage{
+		$result = imagecreatetruecolor($newSize, $size);
+		imagecopyresampled($result, $img, 0, 0, 0, 0, $size, $size, imagesx($img), imagesy($img));
+		return $result;
 	}
 	
 }
