@@ -14,6 +14,9 @@ use function strlen;
 use function chr;
 use function ord;
 use function intdiv;
+use function count;
+use function array_keys;
+use function in_array;
 
 use function imagecreatefrompng;
 use function imagecopy;
@@ -83,8 +86,8 @@ final class SkinTool{
 		$height = SKIN_H[$size];
 		$image = imagecreatetruecolor($width, $height);
 		imagefill($image, 0, 0, imagecolorallocatealpha($image, 0, 0, 0, 127));
-		for($y = 0; $y < $height; $y++){
-			for($x = 0; $x < $width; $x++){
+		for ($y = 0; $y < $height; $y++) {
+			for ($x = 0; $x < $width; $x++) {
 				$r = ord($skindata[$p]);
 				$p++;
 				$g = ord($skindata[$p]);
@@ -109,9 +112,40 @@ final class SkinTool{
 		}
 		$model1 = json_decode($model1, true);
 		$model2 = json_decode($model2, true);
-		foreach ($model2['minecraft:geometry'][0]['bones'] as $key => $value){
-			$model1['minecraft:geometry'][0]['bones'][] = $value;
+		$bones = array();
+		$m1 = $model1['minecraft:geometry'][0]['bones'];
+		$m2 = $model2['minecraft:geometry'][0]['bones'];
+		for($i = 0; $i < count($m1); $i++) {
+			$name = $m1[$i]['name'];
+			$bones[$name]['pivot'] = $m1[$i]['pivot'];
+			if(isset($m1[$i]['parent'])){
+				$bones[$name]['parent'] = $m1[$i]['parent'];
+			}
 		}
+		$changeparent = array();
+		for($i = 0; $i < count($m2); $i++) {
+			$name = $m2[$i]['name'];
+			if(isset($bones[$name])){
+				if(!isset($m2[$i]['cubes'])){
+					if(($bones[$name]['pivot'] === $m2[$i]['pivot']) && ($bones[$name]['parent'] === $m2[$i]['parent'])){
+						unset($m2[$i]);
+						continue;
+					}else{
+						$changename = $name . '1';
+						$changeparent[$name] = $changename;
+						$m2[$i]['name'] = $changename;
+					}
+				}else{
+					$parent = $m2[$i]['parent'];
+					$m2[$i]['name'] = $name . '1';
+					if(in_array($parent,  array_keys($changeparent))){
+						$m2[$i]['parent'] = $changeparent[$parent];
+					}
+				}
+			}
+			 $m1[] = $m2[$i];
+		}
+		$model1['minecraft:geometry'][0]['bones'] = $m1;
 		return json_encode($model1);
 	}
 	
