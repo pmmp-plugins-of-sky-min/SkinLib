@@ -143,7 +143,7 @@ final class SkinTool{
 					}
 				}
 			}
-			 $m1[] = $m2[$i];
+			$m1[] = $m2[$i];
 		}
 		$model1['minecraft:geometry'][0]['bones'] = $m1;
 		return json_encode($model1);
