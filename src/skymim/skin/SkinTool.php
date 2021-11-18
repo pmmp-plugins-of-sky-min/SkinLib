@@ -45,6 +45,7 @@ final class SkinTool{
 				$skindata .= chr($r) . chr($g) . chr($b) . chr($a);
 			}
 		}
+		return $skindata;
 	}
 	
 	public function mergeModel(string $model1, string $model2, int $mode = self::JSON) :?string{
