@@ -24,16 +24,16 @@ final class SkinTool{
 	public const PATH = 0;
 	public const JSON = 1;
 	
-	public function getImg(string $path) :?GdImage{
+	public function getImg(string $path) :?\GdImage{
 		if(!file_exists($path)) return null;
 		return imagecreatefrompng($path);
 	}
 	
-	public function saveImg(GdImage $img, string $path) :void{
+	public function saveImg(\GdImage $img, string $path) :void{
 		imagepng($img, $path);
 	}
 	
-	public function getSkinData(GdImage $img, int $size = self::SIZE64) :string{
+	public function getSkinData(\GdImage $img, int $size = self::SIZE64) :string{
 		$skindata = '';
 		for($y = 0; $y < $size; $y++){
 			for($x = 0; $x < $sizd; $x++){
@@ -60,7 +60,7 @@ final class SkinTool{
 		return json_encode($model1);
 	}
 	
-	public function mergeImage(GdImage $img1, GdImage $img2, int $size = self::SIZE64) :?GdImage{
+	public function mergeImage(\GdImage $img1, \GdImage $img2, int $size = self::SIZE64) :?\GdImage{
 		if(imagecopy($img1, $img2, 0, 0, 0, 0, $size, $size)) return $img1;
 		return null;
 	}
