@@ -84,7 +84,7 @@ final class SkinTool{
 	}
 	
 	public function imgPix(\GdImage $img, int $size) :\GdImage{
-		$result = imagecreatetruecolor($newSize, $size);
+		$result = imagecreatetruecolor($size, $size);
 		imagecopyresampled($result, $img, 0, 0, 0, 0, $size, $size, imagesx($img), imagesy($img));
 		return $result;
 	}
