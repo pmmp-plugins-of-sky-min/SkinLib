@@ -82,8 +82,8 @@ final class SkinTool{
 		$height = SKIN_H[$size];
 		$image = imagecreatetruecolor($width, $height);
 		imagefill($image, 0, 0, imagecolorallocatealpha($image, 0, 0, 0, 127));
-		for ($y = 0; $y < $height; $y++) {
-			for ($x = 0; $x < $width; $x++) {
+		for($y = 0; $y < $height; $y++){
+			for($x = 0; $x < $width; $x++){
 				$r = ord($skindata[$p]);
 				$p++;
 				$g = ord($skindata[$p]);
