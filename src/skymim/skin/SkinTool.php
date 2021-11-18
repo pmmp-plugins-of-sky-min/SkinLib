@@ -7,6 +7,7 @@ use pocketmine\utils\SingletonTrait;
 
 use function file_exists;
 use function file_get_contents;
+use function rmdir;
 use function json_encode;
 use function json_decode;
 use function chr;
@@ -36,7 +37,7 @@ final class SkinTool{
 	public function getSkinData(\GdImage $img, int $size = self::SIZE64) :string{
 		$skindata = '';
 		for($y = 0; $y < $size; $y++){
-			for($x = 0; $x < $sizd; $x++){
+			for($x = 0; $x < $size; $x++){
 				$colorat = imagecolorat($img, $x, $y);
 				$a = ((~((int) ($colorat >> 24))) << 1) & 0xff;
 				$r = ($colorat >> 16) & 0xff;
@@ -54,9 +55,11 @@ final class SkinTool{
 			$model1 = file_get_contents($model1);
 			$model2 = file_get_contents($model2);
 		}
-		$model1 = json_decode($model1);
-		$model2 = json_decode($model2);
-		//todo
+		$model1 = json_decode($model1, true);
+		$model2 = json_decode($model2, true);
+		foreach ($model2['minecraft:geometry'][0]['bones'] as $key => $value){
+			$model1['minecraft:geometry'][0]['bones'][] = $value;
+		}
 		return json_encode($model1);
 	}
 	
