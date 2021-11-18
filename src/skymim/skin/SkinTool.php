@@ -76,7 +76,7 @@ final class SkinTool{
 	}
 	
 	public function dataToImage(string $skindata) :?\GdImage{
-		$size = strlen($skinData);
+		$size = strlen($skindata);
 		if(!isset(self::SKIN_H[$size])) return null;
 		$p = 0;
 		$width = SKIN_W[$size];
@@ -91,7 +91,7 @@ final class SkinTool{
 				$p++;
 				$b = ord($skindata[$p]);
 				$p++;
-				$a = 127 - intdiv(ord($skinData[$p]), 2);
+				$a = 127 - intdiv(ord($skindata[$p]), 2);
 				$p++;
 				$col = imagecolorallocatealpha($image, $r, $g, $b, $a);
 				imagesetpixel($image, $x, $y, $col);
