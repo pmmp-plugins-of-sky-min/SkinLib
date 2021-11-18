@@ -13,6 +13,7 @@ use function json_decode;
 use function strlen;
 use function chr;
 use function ord;
+use function intdiv;
 
 use function imagecreatefrompng;
 use function imagecopy;
