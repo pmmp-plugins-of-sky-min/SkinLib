@@ -33,6 +33,12 @@ use function imagesavealpha;
 use function imagefill;
 use function imagesetpixel;
 
+const SKIN = [
+	64 * 32 * 4 ,
+	64 * 64 * 4,
+	128 * 128 * 4,
+];
+
 const SKIN_W = [
 	64 * 32 * 4 => 64,
 	64 * 64 * 4 => 64,
@@ -48,9 +54,6 @@ const SKIN_H = [
 final class SkinTool{
 	use SingletonTrait;
 	
-	public const SIZE64 = 64;
-	public const SIZE128 = 128;
-	
 	public const PATH = 0;
 	public const JSON = 1;
 	
@@ -63,10 +66,13 @@ final class SkinTool{
 		imagepng($img, $path);
 	}
 	
-	public function getSkinData(\GdImage $img, int $size = self::SIZE64) :string{
+	public function getSkinData(\GdImage $img) :?string{
+		$h = imagesy($img);
+		$w = imagesx($img);
+		if(!in_array($w * $h * 4, SKIN)) return null;
 		$skindata = '';
-		for($y = 0; $y < $size; $y++){
-			for($x = 0; $x < $size; $x++){
+		for($y = 0; $y < $h; $y++){
+			for($x = 0; $x < $w; $x++){
 				$colorat = imagecolorat($img, $x, $y);
 				$a = ((~((int) ($colorat >> 24))) << 1) & 0xff;
 				$r = ($colorat >> 16) & 0xff;
@@ -80,7 +86,7 @@ final class SkinTool{
 	
 	public function dataToImage(string $skindata) :?\GdImage{
 		$size = strlen($skindata);
-		if(!isset(self::SKIN_H[$size])) return null;
+		if(!in_array($size, SKIN)) return null;
 		$p = 0;
 		$width = SKIN_W[$size];
 		$height = SKIN_H[$size];
@@ -143,17 +149,23 @@ final class SkinTool{
 					}
 				}
 			}
-			$m1[] = $m2[$i];
+			 $m1[] = $m2[$i];
 		}
 		$model1['minecraft:geometry'][0]['bones'] = $m1;
 		return json_encode($model1);
 	}
 	
-	public function mergeImage(\GdImage $img1, \GdImage $img2, int $size = self::SIZE64) :?\GdImage{
+	public function mergeImage(\GdImage $img1, \GdImage $img2) :?\GdImage{
 		$img1_w = imagesx($img1);
 		$img1_h = imagesy($img1);
 		$img2_w = imagesx($img2);
 		$img2_h = imagesy($img2);
+		if(!in_array($img1_w * $img1_h * 4, SKIN) && !in_array($img2_w * $img2_h * 4, SKIN)) return null;
+		if($img1_w > $img2_w){
+			$size = $img1_w;
+		}else{
+			$size = $img2_w;
+		}
 		if(!($img1_h === $size && $img1_w === $size)){
 			$img1 = $this->imgPix($img1, $size);
 		}
