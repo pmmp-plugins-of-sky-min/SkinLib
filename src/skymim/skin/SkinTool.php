@@ -136,11 +136,9 @@ final class SkinTool{
 					if($bones[$name]['pivot'] === $m2[$i]['pivot']){
 						if(isset($bones[$name]['parent']) && isset($m2[$i]['parent'])){
 							if($bones[$name]['parent'] === $m2[$i]['parent']){
-								unset($m2[$i]);
 								continue;
 							}
 						}else{
-							unset($m2[$i]);
 							continue;
 						}
 					}else{
