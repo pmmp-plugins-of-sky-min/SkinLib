@@ -1,7 +1,7 @@
 # SkinTool
 pmmp virion
 
-# API
+# API -Korean
 ## 이미지 불러오기
 ```php
 SkinTool::getInstance()->getImg($path);
