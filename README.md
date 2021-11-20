@@ -1,7 +1,10 @@
 # SkinTool
 pmmp virion
 
-API -English
+[English](https://github.com/sky-min/SkinTool#api--english)
+[한국어](https://github.com/sky-min/SkinTool#api--korean)
+
+# API -English
 ## Load Image
 ```php
 SkinTool::getInstance()->getImg($path);
