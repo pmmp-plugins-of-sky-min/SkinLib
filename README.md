@@ -16,7 +16,7 @@ SkinTool::getInstance()->saveImg($image, $path);
 ```php
 SkinTool::getInstance()->mergeImage($image1, $image2);
 ```
-	2개의 이미지를 합칩니다. 이미지크기가 스킨에 사용할 수 없는 사이즈이면 null로 반환됩니다.
+2개의 이미지를 합칩니다. 이미지크기가 스킨에 사용할 수 없는 사이즈이면 null로 반환됩니다.
 ## 이미지 스킨데이터로 변환
 ```php
 SkinTool::getInstance()->getSkinData($image);
