@@ -6,23 +6,28 @@ pmmp virion
 ```php
 SkinTool::getInstance()->getImg($path);
 ```
+해당 경로에 있는 이미지를 가져옵니다. 이미지가 없을경우 null로 반환됩니다.
 ## 이미지 저장하기
 ```php
 SkinTool::getInstance()->saveImg($image, $path);
 ```
+얻은 이미지나 수정한 이미지를 저장할때 사용합니다. 동일명의 파일이 있을 경우 오류가 납니다. 주의하여 사용해 주세요.
 ## 이미지 합치기
 ```php
 SkinTool::getInstance()->mergeImage($image1, $image2);
 ```
+	2개의 이미지를 합칩니다. 이미지크기가 스킨에 사용할 수 없는 사이즈이면 null로 반환됩니다.
 ## 이미지 스킨데이터로 변환
 ```php
 SkinTool::getInstance()->getSkinData($image);
 ```
+이미지크기가 스킨에 사용할 수 없는 사이즈이면 null로 반환됩니다.
 ## 스킨데이터로 이미지 불러오기
 ```php
 SkinTool::getInstance()->dataToImage($skinData);
 ```
-## 모댈링 합성
+스킨데이터크기가 아닐 경우 null로 반환됩니다.
+## 모델링 합성하기
 ```php
 SkinTool::getInstance()->mergeModel($model1, $model2, $type);
 ```
