@@ -1,6 +1,42 @@
 # SkinTool
 pmmp virion
 
+API -English
+## Load Image
+```php
+SkinTool::getInstance()->getImg($path);
+```
+Gets the image in that path. If there is no image, it will be returned as null.
+## Saving an Image
+```php
+SkinTool::getInstance()->saveImg($image, $path);
+```
+Use to store acquired or modified images. If a file with the same name exists, an error occurs.
+## Combining images
+```php
+SkinTool::getInstance()->mergeImage($image1, $image2);
+```
+Combine the two images. If the image size is not available for skin, it will be returned as null.
+## image conversion to skin data
+```php
+SkinTool::getInstance()->getSkinData($image);
+```
+If the image size is not available for skin, it will be returned as null.
+## skin data conversion to image
+```php
+SkinTool::getInstance()->dataToImage($skinData);
+```
+Returns null if not skin data size.
+## Combining Modeling
+```php
+SkinTool::getInstance()->mergeModel($model1, $model2, $type);
+```
+For $type, type:SkinTool::PATH or SkinTool:JSON. SkinTool::JSON is specified by default.
+
+SkinTool::JSON requires modelling json in $model1 and $model2
+
+SkinTool::PATH simply insert the file path into $model1 and $model2.
+
 # API -Korean
 ## 이미지 불러오기
 ```php
