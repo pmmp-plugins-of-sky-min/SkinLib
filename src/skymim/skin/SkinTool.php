@@ -58,8 +58,9 @@ final class SkinTool{
 	public const JSON = 1;
 	
 	public function getImg(string $path) :?\GdImage{
-		if(!file_exists($path)) return null;
-		return imagecreatefrompng($path);
+		$img = imagecreatefrompng($path);
+		if($img) return $img;
+		return null;
 	}
 	
 	public function saveImg(\GdImage $img, string $path) :void{
