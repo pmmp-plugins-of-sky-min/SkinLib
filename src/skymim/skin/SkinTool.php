@@ -18,6 +18,7 @@ use function count;
 use function array_keys;
 use function in_array;
 
+use GdImage;
 use function imagecreatefrompng;
 use function imagecopy;
 use function imagepng;
@@ -57,17 +58,17 @@ final class SkinTool{
 	public const PATH = 0;
 	public const JSON = 1;
 	
-	public function getImg(string $path) :?\GdImage{
+	public function getImg(string $path) :?GdImage{
 		$img = imagecreatefrompng($path);
 		if($img) return $img;
 		return null;
 	}
 	
-	public function saveImg(\GdImage $img, string $path) :void{
+	public function saveImg(GdImage $img, string $path) :void{
 		imagepng($img, $path);
 	}
 	
-	public function getSkinData(\GdImage $img) :?string{
+	public function getSkinData(GdImage $img) :?string{
 		$h = imagesy($img);
 		$w = imagesx($img);
 		if(!in_array($w * $h * 4, SKIN)) return null;
@@ -85,7 +86,7 @@ final class SkinTool{
 		return $skindata;
 	}
 	
-	public function dataToImage(string $skindata) :?\GdImage{
+	public function dataToImage(string $skindata) :?GdImage{
 		$size = strlen($skindata);
 		if(!in_array($size, SKIN)) return null;
 		$p = 0;
@@ -161,7 +162,7 @@ final class SkinTool{
 		return json_encode($model1);
 	}
 	
-	public function mergeImage(\GdImage $img1, \GdImage $img2) :?\GdImage{
+	public function mergeImage(GdImage $img1, GdImage $img2) :?GdImage{
 		$img1_w = imagesx($img1);
 		$img1_h = imagesy($img1);
 		$img2_w = imagesx($img2);
@@ -182,7 +183,7 @@ final class SkinTool{
 		return null;
 	}
 	
-	public function imgPix(\GdImage $img, int $size) :\GdImage{
+	public function imgPix(GdImage $img, int $size) :GdImage{
 		$result = imagecreatetruecolor($size, $size);
 		imagecolortransparent($result, imagecolorallocate($result, 0, 0, 0, 127));
 		imagealphablending($result, false);
