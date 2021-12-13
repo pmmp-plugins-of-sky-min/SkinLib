@@ -7,7 +7,7 @@ final class ModelManager{
 	
 	private array $bones;
 	
-	public function __constuct(private array $model){
+	public function __construct(private array $model){
 		$this->init();
 	}
 	
