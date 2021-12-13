@@ -11,7 +11,7 @@ final class ModelManager{
 	private float $height;
 	private array $offset;
 	
-	public function __constuct(private array $model){
+	public function __construct(private array $model){
 		$this->init();
 	}
 	

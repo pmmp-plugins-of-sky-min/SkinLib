@@ -40,7 +40,7 @@ final class Bone{
 	
 	public function mergeCubes(array $cubes) : void{
 		if(isset($this->bone['cubes'])){
-			$this->bone['cubes'] = array_merge($this->bone['cubes'], $cubes)
+			$this->bone['cubes'] = array_merge($this->bone['cubes'], $cubes);
 		}
 	}
 	
