@@ -76,7 +76,7 @@ final class ModelManager{
 	}
 	
 	public function mergeModel(ModelManager $manager) : string{
-		&$model = $this->model['minecraft:geometry'][0];
+		$model = $this->model['minecraft:geometry'][0];
 		if(($offset1 = $this->getOffset()) !== ($offset2 = $manager->getOffset)){
 			$model['description']['visible_bounds_offset'] = array_map(function(float $i, float $j) : float{
 				return ($i + $j) / 2;
@@ -120,7 +120,7 @@ final class ModelManager{
 			}
 		}
 		$model['bones'] = $resultbone;
-		return json_encode($this->model);
+		return json_encode($model);
 	}
 	
 }
