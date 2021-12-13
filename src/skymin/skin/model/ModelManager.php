@@ -3,6 +3,8 @@ declare(strict_types = 1);
 
 namespace skymin\skin\model;
 
+use function json_encode;
+
 final class ModelManager{
 	
 	private array $bones;
@@ -39,6 +41,10 @@ final class ModelManager{
 		return $this->bones;
 	}
 	
+	public function setBone(Bone $bone) : void{
+		$this->bones[$bone->getName()] = $bone;
+	}
+	
 	public function getName() : string{
 		return $this->name;
 	}
@@ -54,5 +60,9 @@ final class ModelManager{
 	public function getOffset() : array{
 		return $this->offset;
 	}
+	
+	/*public function mergeModel(ModelManager $manager) : string{
+		
+	}*/
 	
 }
