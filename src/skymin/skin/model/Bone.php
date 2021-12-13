@@ -13,6 +13,10 @@ final class Bone{
 		return $this->bone['name'];
 	}
 	
+	public function setName(string $name) : void{
+		$this->bone['name'] = $name;
+	}
+	
 	public function getParentName() : ?string{
 		if(isset($this->bone['parent'])){
 			return $this->bone['parent'];

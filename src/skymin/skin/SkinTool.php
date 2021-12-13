@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace skymin\skin;
 
+use skymin\skin\model\ModelManager;
 use pocketmine\utils\SingletonTrait;
 
 use function file_exists;
@@ -118,48 +119,9 @@ final class SkinTool{
 			$model1 = file_get_contents($model1);
 			$model2 = file_get_contents($model2);
 		}
-		$model1 = json_decode($model1, true);
-		$model2 = json_decode($model2, true);
-		$bones = array();
-		$m1 = $model1['minecraft:geometry'][0]['bones'];
-		$m2 = $model2['minecraft:geometry'][0]['bones'];
-		for($i = 0; $i < count($m1); $i++) {
-			$name = $m1[$i]['name'];
-			$bones[$name]['pivot'] = $m1[$i]['pivot'];
-			if(isset($m1[$i]['parent'])){
-				$bones[$name]['parent'] = $m1[$i]['parent'];
-			}
-		}
-		$changeparent = array();
-		for($i = 0; $i < count($m2); $i++) {
-			$name = $m2[$i]['name'];
-			if(isset($bones[$name])){
-				if(!isset($m2[$i]['cubes'])){
-					if($bones[$name]['pivot'] === $m2[$i]['pivot']){
-						if(isset($bones[$name]['parent']) && isset($m2[$i]['parent'])){
-							if($bones[$name]['parent'] === $m2[$i]['parent']){
-								continue;
-							}
-						}else{
-							continue;
-						}
-					}else{
-						$changename = $name . '1';
-						$changeparent[$name] = $changename;
-						$m2[$i]['name'] = $changename;
-					}
-				}else{
-					$parent = $m2[$i]['parent'];
-					$m2[$i]['name'] = $name . '1';
-					if(in_array($parent,  array_keys($changeparent))){
-						$m2[$i]['parent'] = $changeparent[$parent];
-					}
-				}
-			}
-			 $m1[] = $m2[$i];
-		}
-		$model1['minecraft:geometry'][0]['bones'] = $m1;
-		return json_encode($model1);
+		$model1 = new ModelManager(json_decode($model1, true));
+		$model2 = new ModelManager(json_decode($model2, true));
+		return $model1->mergeModel($model2);
 	}
 	
 	public function mergeImage(GdImage $img1, GdImage $img2) :?GdImage{
