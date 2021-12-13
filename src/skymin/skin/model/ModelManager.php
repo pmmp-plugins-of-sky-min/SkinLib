@@ -120,7 +120,7 @@ final class ModelManager{
 			}
 		}
 		$model['bones'] = $resultbone;
-		return json_encode($model);
+		return json_encode($this->model);
 	}
 	
 }
