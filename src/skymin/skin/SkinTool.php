@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace skymin\skin;
 
-use skymin\skin\model\ModelManager;
 use pocketmine\utils\SingletonTrait;
 
 use function file_exists;
@@ -61,8 +60,8 @@ final class SkinTool{
 	public const MODE_PATH = 0;
 	public const MODE_JSON = 1;
 	
-	public function getModelManager(string $model, int $mode = self::JSON){
-		if($mode === self::PATH){
+	public function getModelManager(string $model, int $mode = self::MODE_JSON){
+		if($mode === self::MODE_PATH){
 			if(!file_exists($model)) return null;
 			$model = file_get_contents($model);
 		}
