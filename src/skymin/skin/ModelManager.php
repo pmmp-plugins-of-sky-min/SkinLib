@@ -5,6 +5,10 @@ namespace skymin\skin;
 
 use function array_map;
 use function json_encode;
+use function dirname;
+use function is_dir;
+use function mkdir;
+use function file_put_contents;
 
 final class ModelManager{
 	
@@ -45,10 +49,6 @@ final class ModelManager{
 		return $this->bones;
 	}
 	
-	public function setBone(Bone $bone) : void{
-		$this->bones[$bone->getName()] = $bone;
-	}
-	
 	public function getName() : string{
 		return $this->name;
 	}
@@ -73,7 +73,19 @@ final class ModelManager{
 		return $this->textureH;
 	}
 	
-	public function mergeModel(ModelManager $manager) : string{
+	public function getJson() : string{
+		return json_encode($this->model);
+	}
+	
+	public function save(string $path) : void{
+		$dir = dirname($path);
+		if(!is_dir($dir)){
+			mkdir($dir);
+		}
+		file_put_contents($path, json_encode($this->model));
+	}
+	
+	public function mergeModel(ModelManager $manager) : ModelManager{
 		$model = $this->model;
 		if(($offset1 = $this->getOffset()) !== ($offset2 = $manager->getOffset())){
 			$model['minecraft:geometry'][0]['description']['visible_bounds_offset'] = array_map(function(float $i, float $j) : float{
@@ -129,7 +141,7 @@ final class ModelManager{
 			$resultBones[] = $bone;
 		}
 		$model['minecraft:geometry'][0]['bones'] = $resultBones;
-		return json_encode($model);
+		return new self($model);
 	}
 	
 }

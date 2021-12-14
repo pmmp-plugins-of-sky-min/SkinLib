@@ -8,15 +8,11 @@ use pocketmine\utils\SingletonTrait;
 
 use function file_exists;
 use function file_get_contents;
-use function rmdir;
-use function json_encode;
 use function json_decode;
 use function strlen;
 use function chr;
 use function ord;
 use function intdiv;
-use function count;
-use function array_keys;
 use function in_array;
 
 use GdImage;
@@ -56,13 +52,22 @@ const SKIN_H = [
 final class SkinTool{
 	use SingletonTrait;
 	
-	public const MODE_PATH = 0;
-	public const MODE_JSON = 1;
-	
 	public function getImg(string $path) :?GdImage{
 		$img = imagecreatefrompng($path);
 		if($img) return $img;
 		return null;
+	}
+	
+	public const MODE_PATH = 0;
+	public const MODE_JSON = 1;
+	
+	public function getModelManager(string $model, int $mode = self::JSON){
+		if($mode === self::PATH){
+			if(!file_exists($model)) return null;
+			$model = file_get_contents($model);
+		}
+		$model = new ModelManager(json_decode($model, true));
+		return $model;
 	}
 	
 	public function saveImg(GdImage $img, string $path) :void{
@@ -111,15 +116,6 @@ final class SkinTool{
 		}
 		imagesavealpha($image, true);
 		return $image;
-	}
-	
-	public function getModelManager(string $model, int $mode = self::JSON){
-		if($mode === self::PATH){
-			if(!file_exists($model)) return null;
-			$model = file_get_contents($model);
-		}
-		$model = new ModelManager(json_decode($model, true));
-		return $model;
 	}
 	
 	public function mergeImage(GdImage $img1, GdImage $img2) :?GdImage{
