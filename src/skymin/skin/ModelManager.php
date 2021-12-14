@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace skymin\skin\model;
+namespace skymin\skin;
 
 use function array_map;
 use function json_encode;
