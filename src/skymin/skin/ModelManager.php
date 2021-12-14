@@ -86,23 +86,24 @@ final class ModelManager{
 	}
 	
 	public function mergeModel(ModelManager $manager) : ModelManager{
-		$model = $this->model;
+		$result = $this->model;
+		$model = &$result['minecraft:geometry'][0];
 		if(($offset1 = $this->getOffset()) !== ($offset2 = $manager->getOffset())){
-			$model['minecraft:geometry'][0]['description']['visible_bounds_offset'] = array_map(function(float $i, float $j) : float{
+			$model['description']['visible_bounds_offset'] = array_map(function(float $i, float $j) : float{
 				return ($i + $j) / 2;
 			}, $offset1, $offset2);
 		}
 		if($this->getWidth() < $manager->getWidth()){
-			$model['minecraft:geometry'][0]['description']['visible_bounds_width'] = $manager->getWidth();
+			$model['description']['visible_bounds_width'] = $manager->getWidth();
 		}
 		if($this->getHeight() < $manager->getHeight()){
-			$model['minecraft:geometry'][0]['description']['visible_bounds_height'] = $manager->getHeight();
+			$model['description']['visible_bounds_height'] = $manager->getHeight();
 		}
 		if($this->getTextureWidth() < $manager->getTextureWidth()){
-			$model['minecraft:geometry'][0]['description']['texture_width'] = $manager->getTextureWidth();
+			$model['description']['texture_width'] = $manager->getTextureWidth();
 		}
 		if($this->getTextureHeight() < $manager->getTextureHeight()){
-			$model['minecraft:geometry'][0]['description']['texture_height'] = $manager->getTextureHeight();
+			$model['description']['texture_height'] = $manager->getTextureHeight();
 		}
 		$resultBones = [];
 		$tbones = $this->getBones();
@@ -140,8 +141,8 @@ final class ModelManager{
 		foreach($tbones as $name  => $bone){
 			$resultBones[] = $bone;
 		}
-		$model['minecraft:geometry'][0]['bones'] = $resultBones;
-		return new self($model);
+		$model['bones'] = $resultBones;
+		return new self($result);
 	}
 	
 }
