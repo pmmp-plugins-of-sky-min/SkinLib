@@ -33,13 +33,16 @@ SkinTool::getInstance()->dataToImage($skinData);
 Returns null if not skin data size.
 ## Combining Modeling
 ```php
-SkinTool::getInstance()->mergeModel($model1, $model2, $type);
+$modelManager1 = SkinTool::getModelManager(string $model1, $mode);
+$modelManager2 = SkinTool::getModelManager(string $model2, $mode);
+$result = $modelManager1->mergeModel($modelManager2);
+$json = $result->getJson();
 ```
 For $type, type:SkinTool::PATH or SkinTool:JSON. SkinTool::JSON is specified by default.
 
-SkinTool::JSON requires modelling json in $model1 and $model2
+SkinTool::MODE_JSON requires modelling json in $model1 and $model2
 
-SkinTool::PATH simply insert the file path into $model1 and $model2.
+SkinTool::MODE_PATH simply insert the file path into $model1 and $model2.
 
 <br/>
 
@@ -71,12 +74,15 @@ SkinTool::getInstance()->dataToImage($skinData);
 스킨데이터크기가 아닐 경우 null로 반환됩니다.
 ## 모델링 합성하기
 ```php
-SkinTool::getInstance()->mergeModel($model1, $model2, $type);
+$modelManager1 = SkinTool::getModelManager(string $model1, $mode);
+$modelManager2 = SkinTool::getModelManager(string $model2, $mode);
+$result = $modelManager1->mergeModel($modelManager2);
+$json = $result->getJson();
 ```
 $type에는 SkinTool::PATH와 SkinTool::JSON 중 상황에 맞게 입력하세요. SkinTool::JSON은 기본값으로 지정되어 있습니다.
 
 $type에 따라 $model1과 $model2에 넣어야 할 값이 다름니다.
 
-SkinTool::JSON 일 경우 $model1과 $model2에 모델링 json 내용을 넣어줘야합니다
+SkinTool::MODE_JSON 일 경우 $model1과 $model2에 모델링 json 내용을 넣어줘야합니다
 
-SkinTool::PATH일 경우 $model1과 $model2에 파일경로를 넣어주면 됩니다.
+SkinTool::MODE_PATH일 경우 $model1과 $model2에 파일경로를 넣어주면 됩니다.
