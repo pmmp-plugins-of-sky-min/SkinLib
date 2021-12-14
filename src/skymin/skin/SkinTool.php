@@ -18,6 +18,8 @@ use function intdiv;
 use function count;
 use function array_keys;
 use function in_array;
+use const JSON_PRETTY_PRINT;
+use const JSON_UNESCAPED_UNICODE;
 
 use GdImage;
 use function imagecreatefrompng;
@@ -113,15 +115,13 @@ final class SkinTool{
 		return $image;
 	}
 	
-	public function mergeModel(string $model1, string $model2, int $mode = self::JSON) :?string{
+	public function getModelManager(string $model, int $mode = self::JSON){
 		if($mode === self::PATH){
-			if(!(file_exists($model1) && file_exists($model2))) return null;
-			$model1 = file_get_contents($model1);
-			$model2 = file_get_contents($model2);
+			if(!file_exists($model)) return null;
+			$model = file_get_contents($model);
 		}
-		$model1 = new ModelManager(json_decode($model1, true));
-		$model2 = new ModelManager(json_decode($model2, true));
-		return $model1->mergeModel($model2);
+		$model = new ModelManager(json_decode($model, true));
+		return $model;
 	}
 	
 	public function mergeImage(GdImage $img1, GdImage $img2) :?GdImage{
