@@ -43,6 +43,9 @@ final class ModelManager{
 	private int $textureH;
 	
 	public function __construct(private array $model){
+		if($this->model['format_version'] !== '1.12.0'){
+			throw new \LogicException('Modeling format version must be 1.12.0');
+		}
 		$this->init();
 	}
 	
