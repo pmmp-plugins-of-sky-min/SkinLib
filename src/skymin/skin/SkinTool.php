@@ -18,8 +18,6 @@ use function intdiv;
 use function count;
 use function array_keys;
 use function in_array;
-use const JSON_PRETTY_PRINT;
-use const JSON_UNESCAPED_UNICODE;
 
 use GdImage;
 use function imagecreatefrompng;
@@ -58,8 +56,8 @@ const SKIN_H = [
 final class SkinTool{
 	use SingletonTrait;
 	
-	public const PATH = 0;
-	public const JSON = 1;
+	public const MODE_PATH = 0;
+	public const MODE_JSON = 1;
 	
 	public function getImg(string $path) :?GdImage{
 		$img = imagecreatefrompng($path);
