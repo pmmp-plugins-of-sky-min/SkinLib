@@ -1,4 +1,26 @@
 <?php
+/**
+ *      _                    _       
+ *  ___| | ___   _ _ __ ___ (_)_ __  
+ * / __| |/ / | | | '_ ` _ \| | '_ \ 
+ * \__ \   <| |_| | | | | | | | | | |
+ * |___/_|\_\\__, |_| |_| |_|_|_| |_|
+ *           |___/ 
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the MIT License. see <https://opensource.org/licenses/MIT>.
+ * 
+ * @author skymin
+ * @link   https://github.com/sky-min
+ * @license https://opensource.org/licenses/MIT MIT License
+ * 
+ *   /\___/\
+ * 　(∩`・ω・)
+ * ＿/_ミつ/￣￣￣/
+ * 　　＼/＿＿＿/
+ *
+ */
+
 declare(strict_types = 1);
 
 namespace skymin\skin;
@@ -7,15 +29,11 @@ use pocketmine\utils\SingletonTrait;
 
 use function file_exists;
 use function file_get_contents;
-use function rmdir;
-use function json_encode;
 use function json_decode;
 use function strlen;
 use function chr;
 use function ord;
 use function intdiv;
-use function count;
-use function array_keys;
 use function in_array;
 
 use GdImage;
@@ -55,13 +73,22 @@ const SKIN_H = [
 final class SkinTool{
 	use SingletonTrait;
 	
-	public const PATH = 0;
-	public const JSON = 1;
-	
 	public function getImg(string $path) :?GdImage{
 		$img = imagecreatefrompng($path);
 		if($img) return $img;
 		return null;
+	}
+	
+	public const MODE_PATH = 0;
+	public const MODE_JSON = 1;
+	
+	public function getModelManager(string $model, int $mode = self::MODE_JSON){
+		if($mode === self::MODE_PATH){
+			if(!file_exists($model)) return null;
+			$model = file_get_contents($model);
+		}
+		$model = new ModelManager(json_decode($model, true));
+		return $model;
 	}
 	
 	public function saveImg(GdImage $img, string $path) :void{
@@ -110,56 +137,6 @@ final class SkinTool{
 		}
 		imagesavealpha($image, true);
 		return $image;
-	}
-	
-	public function mergeModel(string $model1, string $model2, int $mode = self::JSON) :?string{
-		if($mode === self::PATH){
-			if(!(file_exists($model1) && file_exists($model2))) return null;
-			$model1 = file_get_contents($model1);
-			$model2 = file_get_contents($model2);
-		}
-		$model1 = json_decode($model1, true);
-		$model2 = json_decode($model2, true);
-		$bones = array();
-		$m1 = $model1['minecraft:geometry'][0]['bones'];
-		$m2 = $model2['minecraft:geometry'][0]['bones'];
-		for($i = 0; $i < count($m1); $i++) {
-			$name = $m1[$i]['name'];
-			$bones[$name]['pivot'] = $m1[$i]['pivot'];
-			if(isset($m1[$i]['parent'])){
-				$bones[$name]['parent'] = $m1[$i]['parent'];
-			}
-		}
-		$changeparent = array();
-		for($i = 0; $i < count($m2); $i++) {
-			$name = $m2[$i]['name'];
-			if(isset($bones[$name])){
-				if(!isset($m2[$i]['cubes'])){
-					if($bones[$name]['pivot'] === $m2[$i]['pivot']){
-						if(isset($bones[$name]['parent']) && isset($m2[$i]['parent'])){
-							if($bones[$name]['parent'] === $m2[$i]['parent']){
-								continue;
-							}
-						}else{
-							continue;
-						}
-					}else{
-						$changename = $name . '1';
-						$changeparent[$name] = $changename;
-						$m2[$i]['name'] = $changename;
-					}
-				}else{
-					$parent = $m2[$i]['parent'];
-					$m2[$i]['name'] = $name . '1';
-					if(in_array($parent,  array_keys($changeparent))){
-						$m2[$i]['parent'] = $changeparent[$parent];
-					}
-				}
-			}
-			 $m1[] = $m2[$i];
-		}
-		$model1['minecraft:geometry'][0]['bones'] = $m1;
-		return json_encode($model1);
 	}
 	
 	public function mergeImage(GdImage $img1, GdImage $img2) :?GdImage{
