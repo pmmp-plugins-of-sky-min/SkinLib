@@ -79,7 +79,7 @@ final class ImageTool{
 	}
 	
 	public function mergeImage(ImageTool $image) :?ImageTool{
-		$img1_w = $this->getWidth()
+		$img1_w = $this->getWidth();
 		$img1_h = $this->getHeight();
 		$img2_w = $image->getWidth();
 		$img2_h = $image->getHeight();
