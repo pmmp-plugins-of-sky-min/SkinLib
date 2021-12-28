@@ -32,7 +32,7 @@ use function is_dir;
 use function mkdir;
 use function file_put_contents;
 
-final class ModelManager{
+final class ModelTool{
 	
 	private array $bones;
 	private string $name;
@@ -43,9 +43,6 @@ final class ModelManager{
 	private int $textureH;
 	
 	public function __construct(private array $model){
-		if($this->model['format_version'] !== '1.12.0'){
-			throw new \LogicException('Modeling format version must be 1.12.0');
-		}
 		$this->init();
 	}
 	
@@ -110,7 +107,7 @@ final class ModelManager{
 		file_put_contents($path, json_encode($this->model));
 	}
 	
-	public function mergeModel(ModelManager $manager) : ModelManager{
+	public function mergeModel(ModelTool $manager) : ModelTool{
 		$result = $this->model;
 		$model = &$result['minecraft:geometry'][0];
 		if(($offset1 = $this->getOffset()) !== ($offset2 = $manager->getOffset())){
@@ -167,7 +164,7 @@ final class ModelManager{
 			$resultBones[] = $bone;
 		}
 		$model['bones'] = $resultBones;
-		return new self($result);
+		return new ModelTool($result);
 	}
 	
 }
