@@ -104,11 +104,11 @@ final class ImageTool{
 	
 	public function imgPix(int $width, int $height) : void{
 		$result = imagecreatetruecolor($width, $height);
-		imagecolortransparent($result, imagecolorallocate($result, 0, 0, 0, 127));
+		imagecolortransparent($result, imagecolorallocate($result, 0, 0, 0));
 		imagealphablending($result, false);
 		imagesavealpha($result, true);
 		$img = $this->image;
-		imagecopyresampled($result, $img, 0, 0, 0, 0, $size, $size, imagesx($img), imagesy($img));
+		imagecopyresampled($result, $img, 0, 0, 0, 0, $width, $width, imagesx($img), imagesy($img));
 		$this->image = $result;
 	}
 	

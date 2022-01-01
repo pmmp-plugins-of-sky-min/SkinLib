@@ -64,12 +64,12 @@ final class SkinTool{
 	public const IMAGE_TYPE_PATH = 0;
 	public const IMAGE_TYPE_DATA = 1;
 	
-	public function getImageTool(string $input, int $type = self::IMAGE_TYPE_PATH) : ImageTool{
+	public function getImageTool(string $input, int $type = self::IMAGE_TYPE_PATH) :?ImageTool{
 		$img = null;
 		if($type === self::IMAGE_TYPE_PATH){
-			$img = imagecreatefrompng($path);
-		}elseif($type === self::IMAGE_TYPE_PATH){
-			$size = strlen($skindata);
+			$img = imagecreatefrompng($input);
+		}elseif($type === self::IMAGE_TYPE_DATA){
+			$size = strlen($input);
 			if(!in_array($size, SKIN)) return null;
 			$p = 0;
 			$width = SKIN_W[$size];
@@ -78,13 +78,13 @@ final class SkinTool{
 			imagefill($image, 0, 0, imagecolorallocatealpha($image, 0, 0, 0, 127));
 			for ($y = 0; $y < $height; $y++) {
 				for ($x = 0; $x < $width; $x++) {
-					$r = ord($skindata[$p]);
+					$r = ord($input[$p]);
 					$p++;
-					$g = ord($skindata[$p]);
+					$g = ord($input[$p]);
 					$p++;
-					$b = ord($skindata[$p]);
+					$b = ord($input[$p]);
 					$p++;
-					$a = 127 - intdiv(ord($skindata[$p]), 2);
+					$a = 127 - intdiv(ord($input[$p]), 2);
 					$p++;
 					$col = imagecolorallocatealpha($image, $r, $g, $b, $a);
 					imagesetpixel($image, $x, $y, $col);
@@ -99,13 +99,12 @@ final class SkinTool{
 	public const MODEL_TYPE_PATH = 0;
 	public const MODEL_TYPE_JSON = 1;
 	
-	public function getModelTool(string $model, int $type = self::MODEL_TYPE_JSON){
-		if($mode === self::MODE_PATH){
-			if(!file_exists($model)) return null;
-			$model = file_get_contents($model);
+	public function getModelTool(string $input, int $type = self::MODEL_TYPE_JSON) :?ModelTool{
+		if($type === self::MODEL_TYPE_PATH){
+			if(!file_exists($input)) return null;
+			$input = file_get_contents($input);
 		}
-		$model = new ModelTool(json_decode($model, true));
-		return $model;
+		return new ModelTool(json_decode($input, true));
 	}
 	
 }
