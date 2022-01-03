@@ -81,35 +81,22 @@ final class ImageTool{
 	public function mergeImage(ImageTool $image) :?ImageTool{
 		$img1_w = $this->getWidth();
 		$img1_h = $this->getHeight();
-		$img2_w = $image->getWidth();
-		$img2_h = $image->getHeight();
-		if($img1_w > $img2_w){
-			$size = $img1_w;
-		}else{
-			$size = $img2_w;
-		}
-		if(!($img1_h === $size && $img1_w === $size)){
-			$this->imgPix($size, $size);
-		}
-		if(!($img2_h === $size && $img2_w === $size)){
-			$image->imgPix($size, $size);
-		}
-		$img1 = $this->image;
-		$img2 = $image->getImage();
-		if(imagecopy($img1, $img2, 0, 0, 0, 0, $size, $size)){
+		$img1 = $this->getImage();
+		$img2 = $image->imgPix($img1_w, $img1_h);
+		if(imagecopy($img1, $img2, 0, 0, 0, 0, $img1_w, $img1_h)){
 			return new ImageTool($img1);
 		}
 		return null;
 	}
 	
-	public function imgPix(int $width, int $height) : void{
+	public function imgPix(int $width, int $height) : GdImage{
 		$result = imagecreatetruecolor($width, $height);
 		imagecolortransparent($result, imagecolorallocate($result, 0, 0, 0));
 		imagealphablending($result, false);
 		imagesavealpha($result, true);
 		$img = $this->image;
 		imagecopyresampled($result, $img, 0, 0, 0, 0, $width, $width, imagesx($img), imagesy($img));
-		$this->image = $result;
+		return $result;
 	}
 	
 }

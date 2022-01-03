@@ -110,7 +110,8 @@ final class ModelTool{
 	public function mergeModel(ModelTool $manager) : ModelTool{
 		$result = $this->model;
 		$model = &$result['minecraft:geometry'][0];
-		if(($offset1 = $this->getOffset()) !== ($offset2 = $manager->getOffset())){
+		$offset2 = $manager->getOffset()
+		if($offset !== ($offset2 = $manager->getOffset())){
 			$model['description']['visible_bounds_offset'] = array_map(function(float $i, float $j) : float{
 				return ($i + $j) / 2;
 			}, $offset1, $offset2);
