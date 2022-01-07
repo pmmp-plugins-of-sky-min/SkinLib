@@ -20,7 +20,7 @@
  * 　　＼/＿＿＿/
  *
  */
- 
+
 declare(strict_types = 1);
 
 namespace skymin\skin;
@@ -82,12 +82,13 @@ final class ImageTool{
 	public const MODE_BACK = 'back';
 	
 	public function mergeImage(ImageTool $image, string $mode = self::MODE_FRONT) :?ImageTool{
+		$width = $this->getWidth();
+		$height = $this->getHeight();
+		$image->imgPix($width, $height);
 		if($mode === self::MODE_BACK){
-			$this->imgPix($width, $height);
 			$img1 = $image->getImage();
 			$img2 = $this->getImage();
 		}else{
-			$image->imgPix($width, $height);
 			$img1 = $this->getImage();
 			$img2 = $image->getImage();
 		}
