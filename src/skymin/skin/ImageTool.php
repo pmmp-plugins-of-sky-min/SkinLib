@@ -20,7 +20,7 @@
  * 　　＼/＿＿＿/
  *
  */
-
+ 
 declare(strict_types = 1);
 
 namespace skymin\skin;
@@ -78,25 +78,20 @@ final class ImageTool{
 		return $skindata;
 	}
 	
-	public function mergeImage(ImageTool $image) :?ImageTool{
-		$img1_w = $this->getWidth();
-		$img1_h = $this->getHeight();
-		$img2_w = $image->getWidth();
-		$img2_h = $image->getHeight();
-		if($img1_w > $img2_w){
-			$size = $img1_w;
+	public const MODE_FRONT = 'front';
+	public const MODE_BACK = 'back';
+	
+	public function mergeImage(ImageTool $image, string $mode = self::MODE_FRONT) :?ImageTool{
+		if($mode === self::MODE_BACK){
+			$this->imgPix($width, $height);
+			$img1 = $image->getImage();
+			$img2 = $this->getImage();
 		}else{
-			$size = $img2_w;
+			$image->imgPix($width, $height);
+			$img1 = $this->getImage();
+			$img2 = $image->getImage();
 		}
-		if(!($img1_h === $size && $img1_w === $size)){
-			$this->imgPix($size, $size);
-		}
-		if(!($img2_h === $size && $img2_w === $size)){
-			$image->imgPix($size, $size);
-		}
-		$img1 = $this->image;
-		$img2 = $image->getImage();
-		if(imagecopy($img1, $img2, 0, 0, 0, 0, $size, $size)){
+		if(imagecopy($img1, $img2, 0, 0, 0, 0, $width, $height)){
 			return new ImageTool($img1);
 		}
 		return null;
