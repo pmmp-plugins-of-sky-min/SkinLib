@@ -84,7 +84,7 @@ final class ImageTool{
 	public function mergeImage(ImageTool $image, string $mode = self::MODE_FRONT) :?ImageTool{
 		$width = $this->getWidth();
 		$height = $this->getHeight();
-		$image->imgPix($width, $height);
+		$image->resize($width, $height);
 		if($mode === self::MODE_BACK){
 			$img1 = $image->getImage();
 			$img2 = $this->getImage();
@@ -98,7 +98,7 @@ final class ImageTool{
 		return null;
 	}
 	
-	public function imgPix(int $width, int $height) : void{
+	public function resize(int $width, int $height) : void{
 		$result = imagecreatetruecolor($width, $height);
 		imagecolortransparent($result, imagecolorallocate($result, 0, 0, 0));
 		imagealphablending($result, false);
