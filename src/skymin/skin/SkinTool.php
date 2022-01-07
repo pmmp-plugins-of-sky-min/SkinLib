@@ -20,12 +20,10 @@
  * 　　＼/＿＿＿/
  *
  */
-
+ 
 declare(strict_types = 1);
 
 namespace skymin\skin;
-
-use pocketmine\utils\SingletonTrait;
 
 use function file_exists;
 use function file_get_contents;
@@ -59,12 +57,11 @@ const SKIN_H = [
 ];
 
 final class SkinTool{
-	use SingletonTrait;
 	
 	public const IMAGE_TYPE_PATH = 0;
 	public const IMAGE_TYPE_DATA = 1;
 	
-	public function getImageTool(string $input, int $type = self::IMAGE_TYPE_PATH) :?ImageTool{
+	public static function getImageTool(string $input, int $type = self::IMAGE_TYPE_PATH) :?ImageTool{
 		$img = null;
 		if($type === self::IMAGE_TYPE_PATH){
 			$img = imagecreatefrompng($input);
@@ -99,7 +96,7 @@ final class SkinTool{
 	public const MODEL_TYPE_PATH = 0;
 	public const MODEL_TYPE_JSON = 1;
 	
-	public function getModelTool(string $input, int $type = self::MODEL_TYPE_JSON) :?ModelTool{
+	public static function getModelTool(string $input, int $type = self::MODEL_TYPE_JSON) :?ModelTool{
 		if($type === self::MODEL_TYPE_PATH){
 			if(!file_exists($input)) return null;
 			$input = file_get_contents($input);
