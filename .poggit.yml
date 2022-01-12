@@ -1,0 +1,10 @@
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/sky-min/SkinLib
+build-by-default: true
+branches:
+- master
+projects:
+  SkinLib:
+    path: ""
+    model: virion
+    type: library
+...
